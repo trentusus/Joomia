@@ -37,6 +37,9 @@ import com.kanyideveloper.joomia.feature_wish_list.domain.model.Wishlist
 import com.kanyideveloper.joomia.feature_wish_list.presentation.wishlist.WishlistViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.snowplowanalytics.snowplow.Snowplow
+import com.snowplowanalytics.snowplow.event.SelfDescribing
+import com.snowplowanalytics.snowplow.payload.SelfDescribingJson
 
 @Destination
 @Composable
@@ -233,6 +236,27 @@ fun DetailsScreenContent(
 
                     Button(
                         onClick = {
+                            var event = SelfDescribing(
+                                "iglu:com.demo.tracking/add_to_basket/jsonschema/1-0-1",
+                                mapOf(
+                                    "location" to "product_page",
+                                    "mechanism" to "standard_button",
+                                    "quantity" to 1
+                                ),
+                            )
+
+                            event.contexts.add(
+                                SelfDescribingJson(
+                                "iglu:com.demo.tracking/add_to_basket/jsonschema/1-0-1",
+                                mapOf(
+                                    "name" to "Mens casual tshirt",
+                                    "company" to "Lucas Co",
+                                    "brand" to "extra slim",
+                                    "category" to "tshirts",
+                                ),
+                            )
+                            )
+                            Snowplow.getDefaultTracker()?.track(event)
                         },
                         colors = ButtonDefaults.buttonColors(
                             contentColor = Color.Black,
