@@ -245,16 +245,16 @@ fun DetailsScreenContent(
                                 ),
                             )
 
-                            event.contexts.add(
+                            event.customContexts.add(
                                 SelfDescribingJson(
-                                "iglu:com.demo.tracking/add_to_basket/jsonschema/1-0-1",
+                                "iglu:com.snplow.sales.gcp/product_entity/jsonschema/1-0-0",
                                 mapOf(
                                     "name" to "Mens casual tshirt",
                                     "company" to "Lucas Co",
                                     "brand" to "extra slim",
                                     "category" to "tshirts",
-                                ),
-                            )
+                                )
+                                )
                             )
                             Snowplow.getDefaultTracker()?.track(event)
                         },
